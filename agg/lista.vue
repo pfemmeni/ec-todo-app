@@ -1,8 +1,13 @@
 <template>
   <div>
-    <li :style="taskDoneBackground">
-      <input type="checkbox" class="checkbox-round check" @click="toggleTask" />
-      <span :style="taskDoneText">{{ element }}</span>
+    <li :class="{ done: element.isDone }">
+      <input
+        type="checkbox"
+        class="checkbox-round check"
+        @click="toggleTask"
+        :checked="element.isDone"
+      />
+      <span :style="taskDoneText">{{ element.name }}</span>
 
       <button @click="$emit('remove-element', id)" class="remove">x</button>
     </li>
@@ -12,45 +17,13 @@
 <script>
 export default {
   props: {
-    element: {
-      type: String,
-      requried: true,
-    },
-    id: {
-      type: String,
-      requried: true,
-    },
-    taskIsDone: {
-      type: Boolean,
-      requried: true,
-    },
+    element: Object,
   },
   emits: ["remove-element", "checked-tasks"],
-  computed: {
-    taskDoneBackground() {
-      if (this.isDone) {
-        return "background-color: #faffd0; ";
-      } else {
-        return "background-color: #c4eab6;";
-      }
-    },
-    taskDoneText() {
-      if (this.isDone) {
-        return "text-decoration: line-through;";
-      } else {
-        return "text-decoration: none;";
-      }
-    },
-  },
-  data() {
-    return {
-      isDone: false,
-    };
-  },
+
   methods: {
     toggleTask() {
-      this.isDone = !this.isDone;
-      this.$emit("checked-tasks", this.id);
+      this.$emit("checked-tasks");
     },
   },
 };
@@ -108,5 +81,9 @@ button:active {
   border-radius: 20%;
   cursor: pointer;
   outline: none;
+}
+.done {
+  background-color: #faffd0;
+  text-decoration: line-through;
 }
 </style>

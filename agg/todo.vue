@@ -11,27 +11,25 @@
           <List
             v-for="(task, id) in todolista"
             :key="id"
-            :element="task.name"
-            :id="task.id"
-            :task-is-done="task.isDone"
-            @remove-element="removeElement"
-            @checked-tasks="checked"
+            :element="task"
+            @remove-element="removeElement(task.id)"
+            @checked-tasks="checked(task)"
           />
+          <form @submit.prevent="clickHandler" class="form">
+            <input
+              class="input"
+              type="text"
+              v-model="field"
+              @keydown.enter="clickHandler"
+              @
+            />
+            <button type="button" @click="clickHandler" class="button">
+              LÄGG TILL TODO
+            </button>
+            <p v-if="error">Måste innehålla mer än 2 tecken</p>
+          </form>
         </div>
       </div>
-
-      <form @submit.prevent="clickHandler" class="form">
-        <input
-          class="input"
-          type="text"
-          v-model="field"
-          @keydown.enter.="clickHandler"
-        />
-        <button type="button" @click="clickHandler" class="button">
-          LÄGG TILL TODO
-        </button>
-        <p v-if="error">Måste innehålla mer än 2 tecken</p>
-      </form>
     </div>
   </div>
 </template>
@@ -46,20 +44,15 @@ export default {
       field: "",
       todolista: [],
       error: false,
-      tasksLeftToDo: 0,
     };
+  },
+  computed: {
+    tasksLeftToDo() {
+      return this.todolista.filter((task) => task.isDone === false).length;
+    },
   },
 
   methods: {
-    tasksLeft() {
-      for (this.task in this.todolista) {
-        if (!this.task.isDone) {
-          this.tasksLeftToDo = this.todolista.length;
-        } else if (this.task.isDone) {
-          this.tasksLeftToDo = this.todolista.length - 1;
-        }
-      }
-    },
     clickHandler() {
       if (this.field.length < 3) {
         this.error = true;
@@ -69,7 +62,6 @@ export default {
         this.addThing(this.field);
         this.field = "";
       }
-      this.tasksLeft();
     },
     addThing(task) {
       const newThing = {
@@ -79,26 +71,12 @@ export default {
       };
       return this.todolista.push(newThing);
     },
-    /*   checked(id) {
-      this.thing = this.todolista.filter((thing) => thing.id === id);
-      for (this.thing in this.todolista) {
-        if (this.thing.isDone) {
-          this.tasksLeftToDo = this.todolista.length;
+    checked(theTodo) {
+      theTodo.isDone = !theTodo.isDone;
+    },
 
-          console.log("true to false");
-        } else if (!this.thing.isDone) {
-          this.tasksLeftToDo = this.todolista.length - 1;
-
-          console.log("false to true");
-        }
-      }
-    }, */
     removeElement(id) {
       this.todolista = this.todolista.filter((thing) => thing.id !== id);
-      this.tasksLeft();
-      if (this.todolista.length < 1) {
-        this.tasksLeftToDo = 0;
-      }
     },
   },
 };
