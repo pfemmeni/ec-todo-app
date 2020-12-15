@@ -1,6 +1,12 @@
 <template>
   <div class="first">
     <div class="all">
+      <CookieContent
+        v-for="(cookie, id) in cookies"
+        :key="id"
+        :cookie-object="cookie"
+      >
+      </CookieContent>
       <div>
         <img class="pic" :src="require('./Todo_logo.png')" alt="" />
         <p class="p1">Checklista</p>
@@ -21,7 +27,6 @@
               type="text"
               v-model="field"
               @keydown.enter="clickHandler"
-              @
             />
             <button type="button" @click="clickHandler" class="button">
               LÄGG TILL TODO
@@ -36,14 +41,24 @@
 
 <script>
 import List from "./lista";
+import CookieContent from "./cookie-content";
+
 export default {
-  components: { List },
+  components: { List, CookieContent },
 
   data() {
     return {
       field: "",
       todolista: [],
       error: false,
+      cookies: [
+        {
+          denyButtonText: "Deny",
+          acceptButtonText: "Accept",
+          message:
+            "This website uses cookies to ensure you get the best experience on our website. ",
+        },
+      ],
     };
   },
   computed: {
