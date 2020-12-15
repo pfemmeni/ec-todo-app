@@ -7,7 +7,7 @@
         @click="toggleTask"
         :checked="element.isDone"
       />
-      <span :style="taskDoneText">{{ element.name }}</span>
+      <span :class="{ done: element.isDone }">{{ element.name }}</span>
 
       <button @click="$emit('remove-element', id)" class="remove">x</button>
     </li>
