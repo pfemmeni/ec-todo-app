@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <div>{{ cookieObject.message }}</div>
+  <div class="positioning" v-if="isOpen">
     <div>
-      <button @click="acceptCookies">
-        {{ cookie.Object.acceptButtonText }}
-      </button>
-      <button @click="denyCookies">{{ cookieObject.denyButtonText }}</button>
+      This website uses cookies to ensure you get the best experience on our
+      website.
+    </div>
+    <div>
+      <button @click="acceptCookies">Accept</button>
+      <button @click="denyCookies">Deny</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    cookieObject: Object,
-  },
   data() {
     return {
       isOpen: true,
@@ -22,23 +20,40 @@ export default {
   },
   methods: {
     getCookies() {
-      return localStorage.getItem("Accepted", true);
+      return localStorage.getItem("Accepted");
     },
     acceptCookies() {
       this.isOpen = false;
-      localStorage.setItem("Accepted", true);
+      localStorage.setItem("Accepted", "true");
     },
     denyCookies() {
       this.isOpen = false;
-      localStorage.setItem("Accepted", false);
+      localStorage.setItem("Accepted", "false");
     },
   },
   created() {
-    if (this.getCookies() === true) {
-      this.isOpen = true;
+    if (this.getCookies() === "true") {
+      this.isOpen = false;
     }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.positioning {
+  position: fixed, top;
+  background-color: #b8e5b6;
+  margin: none;
+  padding: 15px;
+  color: darkgreen;
+}
+button {
+  margin-top: 8px;
+  margin-right: 10px;
+  background-color: #5ca15c;
+  color: white;
+  outline: none;
+  border: none;
+  padding: 5px;
+}
+</style>

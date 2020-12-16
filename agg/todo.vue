@@ -1,12 +1,7 @@
 <template>
   <div class="first">
     <div class="all">
-      <CookieContent
-        v-for="(cookie, id) in cookies"
-        :key="id"
-        :cookie-object="cookie"
-      >
-      </CookieContent>
+      <CookieContent> </CookieContent>
       <div>
         <img class="pic" :src="require('./Todo_logo.png')" alt="" />
         <p class="p1">Checklista</p>
@@ -51,14 +46,6 @@ export default {
       field: "",
       todolista: [],
       error: false,
-      cookies: [
-        {
-          denyButtonText: "Deny",
-          acceptButtonText: "Accept",
-          message:
-            "This website uses cookies to ensure you get the best experience on our website. ",
-        },
-      ],
     };
   },
   computed: {
@@ -73,9 +60,9 @@ export default {
         this.error = true;
         this.field = "";
       } else {
-        this.error = false;
         this.addThing(this.field);
         this.field = "";
+        this.error = false;
       }
     },
     addThing(task) {
